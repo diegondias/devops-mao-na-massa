@@ -1,0 +1,35 @@
+Vagrant.configure("2") do |config|
+    config.vm.provision "shell", inline: "echo config docker swarm cluster"    
+    config.vm.define "manager" do |manager|
+        manager.vm.box = "generic/oracle8"
+        manager.vm.hostname = "manager"
+        manager.vm.provision "shell", path: "provision.sh"
+        manager.vm.network "private_network", ip: "192.168.1.2"
+        manager.vm.network "forwarded_port", guest: 80, host: 8090
+        manager.vm.synced_folder ".", "/vagrant", type: "rsync"
+        # comandos que não estão no curso
+        manager.vbguest.auto_update = false
+        manager.vbguest.no_remote = true
+        manager.vbguest.installer_options = { allow_kernel_upgrade: true }
+    end
+    config.vm.define "worker1" do |worker1|
+        worker1.vm.box = "generic/oracle8"
+        worker1.vm.hostname = "worker1"
+        worker1.vm.provision "shell", path: "provision.sh"
+        worker1.vm.network "private_network", ip: "192.168.1.3"
+        # comandos que não estão no curso
+        worker1.vbguest.auto_update = false
+        worker1.vbguest.no_remote = true
+        worker1.vbguest.installer_options = { allow_kernel_upgrade: true }
+    end
+    config.vm.define "worker2" do |worker2|
+        worker2.vm.box = "generic/oracle8"
+        worker2.vm.hostname = "worker2"
+        worker2.vm.provision "shell", path: "provision.sh"
+        worker2.vm.network "private_network", ip: "192.168.1.4"
+        # comandos que não estão no curso
+        worker2.vbguest.auto_update = false
+        worker2.vbguest.no_remote = true
+        worker2.vbguest.installer_options = { allow_kernel_upgrade: true }
+    end
+end
