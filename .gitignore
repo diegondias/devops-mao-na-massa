@@ -1,2 +1,3 @@
 .vagrant
 vagrant-manager.ps1
+set-timezone.sh
